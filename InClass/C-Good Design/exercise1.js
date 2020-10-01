@@ -40,33 +40,53 @@
    */
 
 
-function myFunction(salary, taxCode, incomeTax1, incomeTax2, ownsCar) {
-  var totalIncomeTax = incomeTax1 + incomeTax2;
-  var studentLoan = (salary - 17775) * 0.09;
-  var originalSalary = salary;
-  var nationalInsurance = null;
 
-  if (taxCode === "1150L") {
-    nationalInsurance = salary * 0.1;
-  } else if (taxCode === "ST") {
-    nationalInsurance = salary * 0.05;
-  } else {
-    nationalInsurance = salary * 0.08;
-  }
+/**
+ *   This function count my great many and i will cry
+ * @param {number} salary 
+ * @param {string} taxCode
+ * @param {Array} incomeTax
+ * @return {string}
+ */
+function getMyMoney(salary, taxCode, incomeTax) {
+   var [incomeTax1, incomeTax2] = incomeTax;
+   var totalIncomeTax = incomeTax1 + incomeTax2;
+   var studentLoan = getStudentLoan(17775, 0.09, salary);
+   var originalSalary = salary;
+   var nationalInsurance = getNationalInsurance(taxCode, salary);
+   salary = salary - nationalInsurance - totalIncomeTax - studentLoan;
 
-  var deductions = [nationalInsurance, totalIncomeTax, studentLoan];
-
-  salary = salary - deductions[0];
-  salary = salary - deductions[1];
-  salary = salary - deductions[2];
-
-  return (
-    "Your gross income is £" +
-    originalSalary.toString() +
-    " and your net income is £" +
-    salary.toString() +
-    "."
-  );
+   return `Your gross income is $ ${originalSalary} and your net income is $ ${salary.toString()} .`;
 }
 
-console.log(myFunction(28000, "1150L", 1000, 580, false));
+
+/**
+ *  Return Student Loan summ
+ *  @param {number} sum 
+ *  @param {number} percent 
+ *  @param {number} salary 
+ *  @return {number}
+ */
+
+function getStudentLoan(sum, percent, salary) {
+   return (salary - sum) * percent;
+}
+
+/**
+ * This function count national Insurance
+ * @param {string} taxCode
+ * @param {number} salary
+ * @return {number} 
+ */
+function getNationalInsurance(taxCode, salary) {
+   if (taxCode === "1150L") {
+      nationalInsurance = salary * 0.1;
+   } else if (taxCode === "ST") {
+      nationalInsurance = salary * 0.05;
+   } else {
+      nationalInsurance = salary * 0.08;
+   }
+   return nationalInsurance;
+}
+
+console.log(getMyMoney(28000, "1150L", [1000, 580]));
